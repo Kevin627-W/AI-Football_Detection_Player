@@ -1,0 +1,14 @@
+# Abaikan Virtual Environment
+venv/
+.pyvenv.cfg
+
+# Abaikan file Model (karena > 100MB)
+*.pt
+
+# Abaikan cache Python
+__pycache__/
+*.pyc
+
+# Abaikan file sistem operasi
+.DS_Store
+Thumbs.db
