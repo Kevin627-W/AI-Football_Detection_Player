@@ -1,69 +1,450 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>YOLOv8 Object Detection</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <title>AI Football Analyzer - YOLOv8 Detection</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(34, 197, 94, 0.3); }
+      50% { box-shadow: 0 0 40px rgba(34, 197, 94, 0.6); }
+    }
+
+    @keyframes gradient-shift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    
+    .float-animation {
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    .fade-in-up {
+      animation: fadeInUp 0.8s ease-out forwards;
+      opacity: 0;
+    }
+    
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+    .delay-5 { animation-delay: 0.5s; }
+    .delay-6 { animation-delay: 0.6s; }
+    
+    .pulse-glow {
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+
+    .gradient-bg {
+      background: linear-gradient(-45deg, #1a1a1a, #0d1117, #1a1a1a, #0f1419);
+      background-size: 400% 400%;
+      animation: gradient-shift 15s ease infinite;
+    }
+
+    .card-hover {
+      transition: all 0.3s ease;
+    }
+    
+    .card-hover:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(34, 197, 94, 0.2);
+    }
+
+    .feature-icon {
+      transition: all 0.3s ease;
+    }
+
+    .card-hover:hover .feature-icon {
+      transform: scale(1.2) rotate(5deg);
+    }
+
+    .drop-zone {
+      transition: all 0.3s ease;
+      background: rgba(139, 92, 246, 0.05);
+      border: 2px dashed rgba(139, 92, 246, 0.3);
+    }
+
+    .drop-zone:hover {
+      background: rgba(139, 92, 246, 0.1);
+      border-color: rgba(139, 92, 246, 0.6);
+      transform: scale(1.02);
+    }
+
+    .step-number {
+      background: linear-gradient(135deg, #22c55e 0%, #14b8a6 100%);
+      transition: all 0.3s ease;
+    }
+
+    .card-hover:hover .step-number {
+      transform: rotate(360deg) scale(1.1);
+    }
+
+    body {
+      overflow-x: hidden;
+    }
+
+    .hero-gradient {
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+      position: relative;
+    }
+
+    .hero-gradient::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(34, 197, 94, 0.1) 0%, transparent 50%);
+      animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+  </style>
 </head>
-<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen p-6">
 
-    <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-4xl text-center">
-        <h1 class="text-3xl font-bold text-gray-800 mb-6 flex items-center justify-center gap-2">
-            <span>🔍</span> YOLOv8 Object Detection
-        </h1>
+<body class="bg-gray-950 text-gray-200 font-sans">
 
-        <form action="/" method="post" enctype="multipart/form-data" class="flex flex-col items-center gap-4">
-            <input 
+  <!-- HERO SECTION -->
+  <section class="min-h-screen flex flex-col justify-center items-center text-center px-6 hero-gradient relative">
+    <div class="relative z-10">
+      <span class="bg-green-900/30 text-green-400 px-4 py-2 rounded-full text-sm mb-6 inline-block pulse-glow fade-in-up">
+        ⚙️ Powered by Advanced AI
+      </span>
+      <h1 class="text-6xl md:text-7xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-teal-400 to-cyan-400 mb-6 fade-in-up delay-1">
+        Football Player Analysis<br>Reimagined with AI
+      </h1>
+      <p class="text-gray-400 text-lg md:text-xl max-w-3xl mx-auto mb-12 fade-in-up delay-2">
+        Upload your football footage and let our AI identify players, track movements, and deliver professional-grade analysis in seconds.
+      </p>
+    </div>
+  </section>
+
+  <!-- FEATURES SECTION -->
+  <section class="py-24 gradient-bg">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-cyan-400 mb-4 text-center fade-in-up">
+        Powerful AI Capabilities
+      </h2>
+      <p class="text-gray-400 text-center mb-16 text-lg fade-in-up delay-1">
+        Everything you need to analyze football performance at a professional level
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Player Detection -->
+        <div class="bg-gray-900/50 backdrop-blur-sm p-8 rounded-2xl border border-gray-800 hover:border-green-400 card-hover fade-in-up delay-2">
+          <div class="w-16 h-16 bg-green-900/30 rounded-2xl flex items-center justify-center mb-6 feature-icon">
+            <svg class="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold mb-3 text-white">Player Detection</h3>
+          <p class="text-gray-400 leading-relaxed">
+            Automatically identify and recognize individual players in any football footage with advanced facial and jersey recognition.
+          </p>
+        </div>
+
+        <!-- Location Tracking -->
+        <div class="bg-gray-900/50 backdrop-blur-sm p-8 rounded-2xl border border-gray-800 hover:border-green-400 card-hover fade-in-up delay-3">
+          <div class="w-16 h-16 bg-green-900/30 rounded-2xl flex items-center justify-center mb-6 feature-icon">
+            <svg class="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold mb-3 text-white">Location Tracking</h3>
+          <p class="text-gray-400 leading-relaxed">
+            Real-time position tracking on the pitch with heatmaps showing player movement patterns and coverage areas.
+          </p>
+        </div>
+
+        <!-- Performance Metrics -->
+        <div class="bg-gray-900/50 backdrop-blur-sm p-8 rounded-2xl border border-gray-800 hover:border-green-400 card-hover fade-in-up delay-4">
+          <div class="w-16 h-16 bg-green-900/30 rounded-2xl flex items-center justify-center mb-6 feature-icon">
+            <svg class="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold mb-3 text-white">Performance Metrics</h3>
+          <p class="text-gray-400 leading-relaxed">
+            Comprehensive stats including distance covered, sprint speed, acceleration, and stamina analysis throughout the match.
+          </p>
+        </div>
+
+        <!-- Tactical Analysis -->
+        <div class="bg-gray-900/50 backdrop-blur-sm p-8 rounded-2xl border border-gray-800 hover:border-green-400 card-hover fade-in-up delay-2">
+          <div class="w-16 h-16 bg-green-900/30 rounded-2xl flex items-center justify-center mb-6 feature-icon">
+            <svg class="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold mb-3 text-white">Tactical Analysis</h3>
+          <p class="text-gray-400 leading-relaxed">
+            Deep insights into formations, pressing triggers, defensive lines, and offensive build-up patterns.
+          </p>
+        </div>
+
+        <!-- Performance Trends -->
+        <div class="bg-gray-900/50 backdrop-blur-sm p-8 rounded-2xl border border-green-400 card-hover fade-in-up delay-3">
+          <div class="w-16 h-16 bg-green-900/30 rounded-2xl flex items-center justify-center mb-6 feature-icon">
+            <svg class="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold mb-3 text-white">Performance Trends</h3>
+          <p class="text-gray-400 leading-relaxed">
+            Track player development over time with historical data comparison and improvement recommendations.
+          </p>
+        </div>
+
+        <!-- Team Dynamics -->
+        <div class="bg-gray-900/50 backdrop-blur-sm p-8 rounded-2xl border border-gray-800 hover:border-green-400 card-hover fade-in-up delay-4">
+          <div class="w-16 h-16 bg-green-900/30 rounded-2xl flex items-center justify-center mb-6 feature-icon">
+            <svg class="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold mb-3 text-white">Team Dynamics</h3>
+          <p class="text-gray-400 leading-relaxed">
+            Analyze team cohesion, passing networks, and collaborative movements between players on the field.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS SECTION -->
+  <section class="py-24 bg-gray-950">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400 mb-4 text-center fade-in-up">
+        How It Works
+      </h2>
+      <p class="text-gray-400 text-center mb-16 text-lg fade-in-up delay-1">
+        Three simple steps to unlock professional football analysis
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <!-- Step 1 -->
+        <div class="text-center card-hover fade-in-up delay-2">
+          <div class="w-32 h-32 mx-auto mb-8 rounded-full bg-gradient-to-br from-green-400 to-teal-500 flex items-center justify-center step-number">
+            <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+            </svg>
+          </div>
+          <div class="text-6xl font-bold text-green-900/50 mb-4">01</div>
+          <h3 class="text-2xl font-bold mb-4 text-white">Upload Your Footage</h3>
+          <p class="text-gray-400 leading-relaxed">
+            Drag and drop your football video or image. We support all common formats including MP4, MOV, JPG, and PNG files.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="text-center card-hover fade-in-up delay-3">
+          <div class="w-32 h-32 mx-auto mb-8 rounded-full bg-gradient-to-br from-green-400 to-teal-500 flex items-center justify-center step-number">
+            <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+            </svg>
+          </div>
+          <div class="text-6xl font-bold text-green-900/50 mb-4">02</div>
+          <h3 class="text-2xl font-bold mb-4 text-white">AI Processing</h3>
+          <p class="text-gray-400 leading-relaxed">
+            Our advanced AI algorithms analyze the footage, detecting players, tracking movements, and calculating performance metrics in real-time.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="text-center card-hover fade-in-up delay-4">
+          <div class="w-32 h-32 mx-auto mb-8 rounded-full bg-gradient-to-br from-green-400 to-teal-500 flex items-center justify-center step-number">
+            <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+            </svg>
+          </div>
+          <div class="text-6xl font-bold text-green-900/50 mb-4">03</div>
+          <h3 class="text-2xl font-bold mb-4 text-white">View Insights</h3>
+          <p class="text-gray-400 leading-relaxed">
+            Get comprehensive reports with interactive visualizations, heatmaps, player stats, and tactical breakdowns ready to share.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- UPLOAD SECTION -->
+  <section class="py-24 gradient-bg">
+    <div class="max-w-4xl mx-auto px-6">
+      <div class="bg-gray-900/80 backdrop-blur-sm border-2 border-gray-800 rounded-3xl shadow-2xl p-12 fade-in-up">
+        <h2 class="text-4xl font-bold text-white mb-4 text-center">Ready to analyze your footage?</h2>
+        <p class="text-gray-400 text-center mb-10 text-lg">
+          Upload your first video and experience the power of AI-driven football analysis
+        </p>
+
+        <form action="/" method="post" enctype="multipart/form-data" class="space-y-8">
+          <div class="drop-zone rounded-2xl p-12 text-center cursor-pointer">
+            <div class="flex flex-col items-center justify-center">
+              <div class="w-20 h-20 bg-purple-900/30 rounded-full flex items-center justify-center mb-6 float-animation">
+                <svg class="w-10 h-10 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                </svg>
+              </div>
+              <h3 class="text-xl font-semibold text-white mb-2">Drop your files here</h3>
+              <p class="text-gray-400 mb-6">or click to browse</p>
+              <input 
                 type="file" 
                 name="file" 
-                accept="image/*" 
+                accept="image/*,video/*" 
                 required
-                class="file-input file-input-bordered w-full max-w-xs border border-gray-300 rounded-md p-2"
-            >
-            <button 
-                type="submit"
-                class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-200">
-                Upload & Detect
-            </button>
+                class="hidden"
+                id="fileInput"
+              >
+              <label for="fileInput" class="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold py-3 px-8 rounded-xl shadow-lg transition cursor-pointer">
+                Choose File
+              </label>
+            </div>
+          </div>
+
+          <button 
+            type="submit"
+            class="w-full bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white font-bold py-4 px-8 rounded-xl shadow-xl transition transform hover:scale-105">
+            <span class="flex items-center justify-center">
+              <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+              Analyze Now
+            </span>
+          </button>
         </form>
 
         {% if error_msg and not result_img %}
-        <div class="mt-6 p-3 bg-yellow-100 text-yellow-800 border border-yellow-300 rounded-lg">
-            <strong>Note:</strong> {{ error_msg }}
+        <div class="mt-8 p-4 bg-yellow-900/30 border border-yellow-700 text-yellow-400 rounded-xl">
+          <div class="flex items-center">
+            <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+            {{ error_msg }}
+          </div>
         </div>
         {% endif %}
+      </div>
+    </div>
+  </section>
 
-        {% if upload_img %}
-        <div class="mt-8 pt-6 border-t border-gray-200">
-            <h2 class="text-2xl font-semibold text-gray-700 mb-6">Detection Result:</h2>
-            
-            <div class="flex flex-col md:flex-row gap-6 justify-center">
-                
-                <div class="flex-1 p-4 border border-gray-200 rounded-lg shadow-sm">
-                    <h3 class="text-lg font-medium text-gray-600 mb-3">Original Image</h3>
-                    <img src="{{ upload_img }}" alt="Uploaded Image" class="rounded-lg shadow-md max-w-full mx-auto">
-                </div>
-                
-                <div class="flex-1 p-4 border border-gray-200 rounded-lg shadow-sm">
-                    <h3 class="text-lg font-medium text-gray-600 mb-3">Detected Image</h3>
-                    
-                    {% if result_img %}
-                        <img src="{{ result_img }}" alt="Detected Image" class="rounded-lg shadow-md max-w-full mx-auto">
-                    
-                    {% else %}
-                        <div class="flex items-center justify-center h-full text-gray-500 p-4">
-                            <p>(No 'person' detected in the image)</p>
-                        </div>
-                    {% endif %}
+  <!-- RESULT SECTION -->
+  {% if upload_img %}
+  <section class="py-24 bg-gray-950">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-teal-400 mb-12 text-center fade-in-up">
+        Detection Result
+      </h2>
 
-                </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div class="bg-gray-900/50 backdrop-blur-sm p-8 rounded-3xl border border-gray-800 shadow-2xl fade-in-up delay-1">
+          <h3 class="text-2xl font-bold mb-6 text-white flex items-center">
+            <span class="w-3 h-3 bg-blue-400 rounded-full mr-3"></span>
+            Original Image
+          </h3>
+          <div class="rounded-2xl overflow-hidden border-2 border-gray-700">
+            <img src="{{ upload_img }}" alt="Uploaded Image" class="w-full h-auto">
+          </div>
+        </div>
+
+        <div class="bg-gray-900/50 backdrop-blur-sm p-8 rounded-3xl border border-green-800 shadow-2xl fade-in-up delay-2">
+          <h3 class="text-2xl font-bold mb-6 text-white flex items-center">
+            <span class="w-3 h-3 bg-green-400 rounded-full mr-3"></span>
+            Detected Image
+          </h3>
+          {% if result_img %}
+            <div class="rounded-2xl overflow-hidden border-2 border-green-700">
+              <img src="{{ result_img }}" alt="Detected Image" class="w-full h-auto">
             </div>
+          {% else %}
+            <div class="rounded-2xl border-2 border-dashed border-gray-700 p-16 text-center">
+              <svg class="w-16 h-16 text-gray-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <p class="text-gray-400 text-lg">No 'person' detected in the image</p>
+            </div>
+          {% endif %}
         </div>
-        {% endif %}
-        </div>
+      </div>
+    </div>
+  </section>
+  {% endif %}
 
-    <footer class="mt-6 text-gray-500 text-sm">
-        © 2025 YOLO Flask Demo
-    </footer>
+  <!-- FOOTER -->
+  <footer class="py-8 bg-gray-950 text-center text-gray-500 border-t border-gray-800">
+    <p class="text-sm mb-2">© 2024 Football AI Analysis. Powered by advanced machine learning.</p>
+    <p class="text-xs text-gray-600">YOLOv8 Detection System</p>
+  </footer>
+
+  <script>
+    // Intersection Observer for fade-in animations
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.fade-in-up').forEach(el => {
+      observer.observe(el);
+    });
+
+    // File input drag and drop
+    const dropZone = document.querySelector('.drop-zone');
+    const fileInput = document.getElementById('fileInput');
+
+    if (dropZone && fileInput) {
+      dropZone.addEventListener('click', () => fileInput.click());
+
+      dropZone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = 'rgba(139, 92, 246, 0.8)';
+        dropZone.style.background = 'rgba(139, 92, 246, 0.15)';
+      });
+
+      dropZone.addEventListener('dragleave', () => {
+        dropZone.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+        dropZone.style.background = 'rgba(139, 92, 246, 0.05)';
+      });
+
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.style.borderColor = 'rgba(139, 92, 246, 0.3)';
+        dropZone.style.background = 'rgba(139, 92, 246, 0.05)';
+        
+        if (e.dataTransfer.files.length) {
+          fileInput.files = e.dataTransfer.files;
+        }
+      });
+    }
+  </script>
+
 </body>
 </html>
